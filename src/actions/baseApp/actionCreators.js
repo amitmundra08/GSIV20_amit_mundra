@@ -15,9 +15,11 @@ export const getMoreMovies = () => {
     const pageNo = state.baseApp.pageNo;
     const totalPageNo = state.baseApp.totalPageNo;
     const searchTerm = state.baseApp.searchTerm;
-    const url = !!searchTerm
-      ? `https://api.themoviedb.org/3/search/movie?api_key=4d10d9a80e5603250cb04d50ddb9608c&query=${searchTerm}`
-      : `https://api.themoviedb.org/3/discover/movie?latest&page=${pageNo}&api_key=4d10d9a80e5603250cb04d50ddb9608c`;
+    const atleastOnceSearched = state.baseApp.atleastOnceSearched;
+    const url =
+      !!searchTerm && atleastOnceSearched
+        ? `https://api.themoviedb.org/3/search/movie?api_key=4d10d9a80e5603250cb04d50ddb9608c&query=${searchTerm}`
+        : `https://api.themoviedb.org/3/discover/movie?latest&page=${pageNo}&api_key=4d10d9a80e5603250cb04d50ddb9608c`;
     if (pageNo <= totalPageNo) {
       try {
         axios
@@ -63,10 +65,8 @@ export const searchMovieByName = () => {
 };
 
 export const getMovies = () => {
-  console.log('getMovies');
-  return async (dispatch, getState) => {
-    const state = getState();
-    const pageNo = state.baseApp.pageNo;
+  return async dispatch => {
+    const pageNo = 1;
     dispatch(setMovieLoadingStatus(ApiRequestStatus.PENDING));
     try {
       axios
