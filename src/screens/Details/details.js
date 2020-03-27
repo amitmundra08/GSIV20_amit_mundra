@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import {strings, appConstants} from '../../constants';
 import {Colors} from '../../Theme/colors';
@@ -13,17 +14,24 @@ import moment from 'moment';
 import get from 'lodash/get';
 import {ApiRequestStatus} from '../../Models/model';
 import Button from '../../components/Button';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default class Details extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  static navigationOptions = () => {
-    return {
-      headerStyle: {backgroundColor: Colors.greyWithOpacity},
-    };
-  };
+  static navigationOptions = navigationScreenProps => ({
+    headerStyle: styles.headerStyle,
+    headerLeft: (
+      <TouchableOpacity
+        style={styles.headerLeftContainer}
+        onPress={() => navigationScreenProps.navigation.goBack()}>
+        <Icon name="arrow-left" color={Colors.black} size={20} />
+        <Text style={styles.headeerLeftTextStyle}>Back</Text>
+      </TouchableOpacity>
+    ),
+  });
 
   componentWillUnmount() {
     this.props.resetMovieCastCrewAndDuration();
@@ -139,4 +147,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
   },
   buttonTextStyle: {color: Colors.white, textAlign: 'center'},
+  headerStyle: {
+    backgroundColor: Colors.gray,
+    shadowOffset: {width: 2, height: 0},
+    shadowColor: Colors.gray,
+    shadowOpacity: 1.0,
+    shadowRadius: 2,
+  },
+  headerLeftContainer: {flexDirection: 'row', padding: 8, alignItems: 'center'},
+  headeerLeftTextStyle: {marginLeft: 8, fontSize: 16},
 });

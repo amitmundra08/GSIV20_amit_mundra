@@ -63,6 +63,7 @@ export const searchMovieByName = () => {
 };
 
 export const getMovies = () => {
+  console.log('getMovies');
   return async (dispatch, getState) => {
     const state = getState();
     const pageNo = state.baseApp.pageNo;

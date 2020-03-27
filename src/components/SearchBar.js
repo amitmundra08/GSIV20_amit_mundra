@@ -19,7 +19,7 @@ const SearchBar = props => {
       <TextInput
         onChangeText={text => onChangeText(text)}
         style={styles.textInput}
-        underlineColorAndroid={false}
+        underlineColorAndroid={'transparent'}
         placeholder={strings.search}
         placeholderTextColor={Colors.lightGreyWithOpacity}
         onSubmitEditing={() => searchMovieByName()}
@@ -36,7 +36,7 @@ const SearchBar = props => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.greyWithOpacity,
+    backgroundColor: Colors.gray,
     flex: 1,
     width: '100%',
     padding: 8,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     elevation: 1,
     shadowOffset: {width: 2, height: 0},
-    shadowColor: Colors.greyWithOpacity,
+    shadowColor: Colors.gray,
     shadowOpacity: 1.0,
     shadowRadius: 2,
   },
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingLeft: 30,
   },
-  iconContainer: {position: 'absolute', left: 18, top: 16},
-  closeIcons: {position: 'absolute', right: 18, top: 18},
+  iconContainer: {position: 'absolute', left: 18, top: 14},
+  closeIcons: {position: 'absolute', right: 18, top: 14},
 });
 
 export default SearchBar;
