@@ -16,4 +16,5 @@ export const Colors = {
   grey: 'grey',
   white: 'white',
   black: 'black',
+  secondaryTextColor: 'rgba(0,0,0,0.8)',
 };

@@ -3,13 +3,15 @@ import {
   View,
   ScrollView,
   StyleSheet,
-  FlatList,
   Text,
   Image,
+  ActivityIndicator,
 } from 'react-native';
-import {strings} from '../../constants';
+import {strings, appConstants} from '../../constants';
 import {Colors} from '../../Theme/colors';
 import moment from 'moment';
+import get from 'lodash/get';
+import {ApiRequestStatus} from '../../Models/model';
 
 export default class Details extends React.Component {
   constructor(props) {
@@ -22,10 +24,14 @@ export default class Details extends React.Component {
     };
   };
 
+  componentWillUnmount() {
+    this.props.resetMovieCastCrewAndDuration();
+  }
+
   componentDidMount() {}
 
   render() {
-    const {movieDetail = {}} = this.props;
+    const {movieDetail = {}, movieDetailLoadingStatus, movieData} = this.props;
     const {
       title = '',
       vote_average,
@@ -34,30 +40,83 @@ export default class Details extends React.Component {
       release_date,
     } = movieDetail;
     const year = moment(release_date).format('YYYY');
-    console.log('movieDetail', movieDetail);
+    const runtime = get(movieData, 'runtime');
+    const cast = get(movieData, 'cast', []);
+    const crew = get(movieData, 'crew', {});
+    const director = get(crew, 'name');
+    const commaSeperatedCast = cast.join(', ');
+    const duration = runtime ? moment(runtime).format('HH:MM') : '';
+    if (movieDetailLoadingStatus === ApiRequestStatus.PENDING) {
+      return (
+        <View style={styles.normalContainer}>
+          <Text style={styles.marginBottom}>
+            {strings.loading_data_message}
+          </Text>
+          <ActivityIndicator color={Colors.blue} />
+        </View>
+      );
+    }
+    if (movieDetailLoadingStatus === ApiRequestStatus.FAILED) {
+      return (
+        <View style={styles.normalContainer}>
+          <Text style={styles.marginBottom}>
+            {strings.failed_loading_data_message}
+          </Text>
+        </View>
+      );
+    }
     return (
-      <View style={{flex: 1, padding: 16}}>
+      <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <Image
-              source={{uri: `https://image.tmdb.org/t/p/w500${poster_path}`}}
-              style={{width: '100%', height: 300}}
+              source={{uri: `${appConstants.imageUrl}${poster_path}`}}
+              style={styles.imageStyle}
             />
           </View>
-          <View style={{marginTop: 16}}>
-            <Text>
+          <View style={styles.movieTitleContainer}>
+            <Text style={styles.primaryTextStyle}>
               {title}
-              <Text> ({vote_average})</Text>
+              <Text style={styles.secondaryTextStyle}> ({vote_average})</Text>
             </Text>
           </View>
-          <View style={{marginTop: 24}}>
-            <Text>{year} | Length | Director</Text>
+          <View style={styles.movieDetailsContainer}>
+            <Text style={styles.hexFontSize}>
+              <Text>{year}</Text>
+              {duration ? <Text> | {duration}</Text> : <Text />}
+              {!!director ? <Text> | {director}</Text> : <Text />}
+            </Text>
           </View>
-          <View style={{marginTop: 8}}>
-            <Text>Cast:</Text>
+          {cast.length > 0 ? (
+            <View style={styles.castContainer}>
+              <Text style={styles.hexFontSize}>
+                {strings.cast}: {commaSeperatedCast}
+              </Text>
+            </View>
+          ) : (
+            <View />
+          )}
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.hexFontSize}>
+              {strings.description}: {overview}
+            </Text>
           </View>
         </ScrollView>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  normalContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  marginBottom: {marginBottom: 16},
+  container: {flex: 1, padding: 16},
+  imageStyle: {width: '100%', height: 300},
+  movieTitleContainer: {marginTop: 16},
+  primaryTextStyle: {color: Colors.black, fontSize: 18},
+  secondaryTextStyle: {color: Colors.grey},
+  movieDetailsContainer: {marginTop: 16},
+  castContainer: {marginTop: 4},
+  descriptionContainer: {marginTop: 16},
+  hexFontSize: {fontSize: 16, color: Colors.secondaryTextColor},
+});

@@ -7,11 +7,12 @@ import {
   Text,
   SafeAreaView,
   ActivityIndicator,
-  Image,
 } from 'react-native';
-import {strings} from '../../constants';
+import {strings, appConstants} from '../../constants';
 import SearchBar from '../../components/SearchBar';
 import Card from '../../components/Card';
+import {ApiRequestStatus} from '../../Models/model';
+import {Colors} from '../../Theme/colors';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ export default class Home extends React.Component {
       <Card
         onPress={() => this.props.navigateToMovieDetail(item)}
         title={title}
-        imageUrl={`https://image.tmdb.org/t/p/w500${poster_path}`}
+        imageUrl={`${appConstants.imageUrl}${poster_path}`}
         rating={vote_average}
         description={overview}
       />
@@ -40,18 +41,20 @@ export default class Home extends React.Component {
 
   render() {
     const {movieLoadingStatus, movieList} = this.props;
-    if (movieLoadingStatus === 'PENDING') {
+    if (movieLoadingStatus === ApiRequestStatus.PENDING) {
       return (
         <View style={styles.normalContainer}>
-          <Text style={{marginBottom: 16}}>{strings.loading_data_message}</Text>
-          <ActivityIndicator color="blue" />
+          <Text style={styles.marginBottom}>
+            {strings.loading_data_message}
+          </Text>
+          <ActivityIndicator color={Colors.blue} />
         </View>
       );
     }
-    if (movieLoadingStatus === 'FAILED') {
+    if (movieLoadingStatus === ApiRequestStatus.FAILED) {
       return (
         <View style={styles.normalContainer}>
-          <Text style={{marginBottom: 16}}>
+          <Text style={styles.marginBottom}>
             {strings.failed_loading_data_message}
           </Text>
         </View>
@@ -62,9 +65,9 @@ export default class Home extends React.Component {
         <ScrollView
           onScrollEndDrag={() => this.props.getMoreMovies()}
           showsVerticalScrollIndicator={false}>
-          <View style={{flex: 1}}>
+          <View style={styles.flexStyle}>
             <SearchBar />
-            <View style={{padding: 4, backgroundColor: 'white'}}>
+            <View style={styles.cardContainer}>
               <FlatList
                 numColumns={2}
                 data={movieList}
@@ -82,4 +85,7 @@ export default class Home extends React.Component {
 
 const styles = StyleSheet.create({
   normalContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  flexStyle: {flex: 1},
+  cardContainer: {padding: 4, backgroundColor: Colors.white},
+  marginBottom: {marginBottom: 16},
 });

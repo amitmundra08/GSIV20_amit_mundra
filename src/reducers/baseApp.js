@@ -1,7 +1,8 @@
 import {TypeKeys} from '../actions/baseApp/actions';
+import {ApiRequestStatus} from '../Models/model';
 
 export class InitialState {
-  movieLoadingStatus = 'SUCCESS';
+  movieLoadingStatus = ApiRequestStatus.PENDING;
   movieList = [];
   pageNo = 1;
   totalPageNo = 10;

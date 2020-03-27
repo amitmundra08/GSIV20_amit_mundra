@@ -4,6 +4,7 @@ import get from 'lodash/get';
 import {
   initializeApp,
   getMoreMovies,
+  getMovies,
 } from '../../actions/baseApp/actionCreators';
 import {navigateToMovieDetail} from '../../actions/movieDetails/actionCreators';
 const mapStateToProps = state => ({
@@ -14,6 +15,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   initializeApp: () => dispatch(initializeApp()),
   getMoreMovies: () => dispatch(getMoreMovies()),
+  getMovies: () => dispatch(getMovies()),
   navigateToMovieDetail: movieDetail =>
     dispatch(navigateToMovieDetail(movieDetail, ownProps.navigation)),
 });
