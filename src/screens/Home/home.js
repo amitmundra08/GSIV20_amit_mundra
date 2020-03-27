@@ -40,8 +40,32 @@ export default class Home extends React.Component {
     );
   };
 
+  listEmpty = () => {
+    return (
+      <View style={styles.normalContainer}>
+        <Text style={styles.boldLargeText}>{strings.no_data_found}</Text>
+      </View>
+    );
+  };
+
+  clearSearchTerm = () => {
+    const {atleastOnceSearched} = this.props;
+    this.props.setSearchTerm('');
+    if (atleastOnceSearched) {
+      this.props.getMovies();
+    }
+  };
+
   render() {
-    const {movieLoadingStatus, movieList} = this.props;
+    const {
+      movieLoadingStatus,
+      movieList,
+      getMovies = () => {},
+      getMoreMovies = () => {},
+      setSearchTerm = () => {},
+      searchMovieByName = () => {},
+      searchTerm,
+    } = this.props;
     if (movieLoadingStatus === ApiRequestStatus.PENDING) {
       return (
         <View style={styles.normalContainer}>
@@ -59,7 +83,7 @@ export default class Home extends React.Component {
             {strings.failed_loading_movie_message}
           </Text>
           <Button
-            onPress={() => this.props.getMovies()}
+            onPress={() => getMovies()}
             style={styles.buttonStyle}
             textStyle={styles.buttonTextStyle}
             text={strings.retry}
@@ -67,13 +91,19 @@ export default class Home extends React.Component {
         </View>
       );
     }
+
     return (
       <SafeAreaView>
         <ScrollView
-          onScrollEndDrag={() => this.props.getMoreMovies()}
+          onScrollEndDrag={() => getMoreMovies()}
           showsVerticalScrollIndicator={false}>
           <View style={styles.flexStyle}>
-            <SearchBar />
+            <SearchBar
+              onChangeText={searchTerm => setSearchTerm(searchTerm)}
+              searchMovieByName={() => searchMovieByName()}
+              value={searchTerm}
+              clearSearchTerm={() => this.clearSearchTerm()}
+            />
             <View style={styles.cardContainer}>
               <FlatList
                 numColumns={2}
@@ -81,6 +111,7 @@ export default class Home extends React.Component {
                 extraData={this.state}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item}) => this.renderItem(item)}
+                ListEmptyComponent={this.listEmpty}
               />
             </View>
           </View>
@@ -106,4 +137,5 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
   },
   buttonTextStyle: {color: Colors.white, textAlign: 'center'},
+  boldLargeText: {fontSize: 16, marginTop: 18, textAlign: 'center'},
 });

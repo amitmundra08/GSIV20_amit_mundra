@@ -6,6 +6,8 @@ export class InitialState {
   movieList = [];
   pageNo = 1;
   totalPageNo = 10;
+  searchTerm = '';
+  atleastOnceSearched = false;
 }
 
 export default (state = new InitialState(), action) => {
@@ -25,6 +27,14 @@ export default (state = new InitialState(), action) => {
     case TypeKeys.SET_TOTAL_PAGE_NO: {
       const {totalPageNo} = action;
       return Object.assign({}, state, {totalPageNo});
+    }
+    case TypeKeys.SET_SEARCH_TERM: {
+      const {searchTerm} = action;
+      return Object.assign({}, state, {searchTerm});
+    }
+    case TypeKeys.SET_ATLEAST_ONCE_SEARCHED: {
+      const {atleastOnceSearched} = action;
+      return Object.assign({}, state, {atleastOnceSearched});
     }
     default:
       return state;

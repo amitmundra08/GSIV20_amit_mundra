@@ -14,6 +14,7 @@ export const strings = {
     'Failed to load movie details. Please retry',
   loading_movie_details_message:
     'Loading movie details from server. Please wait.',
+  no_data_found: `Couldn't find data you are looking for. Please try again.`,
 };
 
 export const appConstants = {

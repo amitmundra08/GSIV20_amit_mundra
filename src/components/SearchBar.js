@@ -1,22 +1,35 @@
 import React from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
+import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import {Colors} from '../Theme/colors';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {strings} from '../constants';
 
 const SearchBar = props => {
+  const {
+    onChangeText = () => {},
+    value,
+    clearSearchTerm = () => {},
+    searchMovieByName = () => {},
+  } = props;
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
         <Icon name="search" size={18} color={Colors.lightGreyWithOpacity} />
       </View>
       <TextInput
-        onChangeText={text => console.log(text)}
+        onChangeText={text => onChangeText(text)}
         style={styles.textInput}
         underlineColorAndroid={false}
         placeholder={strings.search}
         placeholderTextColor={Colors.lightGreyWithOpacity}
+        onSubmitEditing={() => searchMovieByName()}
+        value={value}
       />
+      {!!value && (
+        <TouchableOpacity style={styles.closeIcons} onPress={clearSearchTerm}>
+          <Icon name="times" size={18} color={Colors.lightGreyWithOpacity} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -45,6 +58,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
   },
   iconContainer: {position: 'absolute', left: 18, top: 16},
+  closeIcons: {position: 'absolute', right: 18, top: 18},
 });
 
 export default SearchBar;
