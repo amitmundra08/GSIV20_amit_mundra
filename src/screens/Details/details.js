@@ -12,6 +12,7 @@ import {Colors} from '../../Theme/colors';
 import moment from 'moment';
 import get from 'lodash/get';
 import {ApiRequestStatus} from '../../Models/model';
+import Button from '../../components/Button';
 
 export default class Details extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ export default class Details extends React.Component {
       return (
         <View style={styles.normalContainer}>
           <Text style={styles.marginBottom}>
-            {strings.loading_data_message}
+            {strings.loading_movie_details_message}
           </Text>
           <ActivityIndicator color={Colors.blue} />
         </View>
@@ -58,10 +59,18 @@ export default class Details extends React.Component {
     }
     if (movieDetailLoadingStatus === ApiRequestStatus.FAILED) {
       return (
-        <View style={styles.normalContainer}>
-          <Text style={styles.marginBottom}>
-            {strings.failed_loading_data_message}
+        <View style={styles.failedContainer}>
+          <Text style={[styles.marginBottom, styles.centeredText]}>
+            {strings.failed_loading_movie_details_message}
           </Text>
+          <Button
+            onPress={() =>
+              this.props.getMovieDetails(this.props.movieDetail.id)
+            }
+            style={styles.buttonStyle}
+            textStyle={styles.buttonTextStyle}
+            text={strings.retry}
+          />
         </View>
       );
     }
@@ -109,7 +118,7 @@ export default class Details extends React.Component {
 
 const styles = StyleSheet.create({
   normalContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-  marginBottom: {marginBottom: 16},
+  marginBottom: {marginBottom: 16, fontSize: 16},
   container: {flex: 1, padding: 16},
   imageStyle: {width: '100%', height: 300},
   movieTitleContainer: {marginTop: 16},
@@ -119,4 +128,15 @@ const styles = StyleSheet.create({
   castContainer: {marginTop: 4},
   descriptionContainer: {marginTop: 16},
   hexFontSize: {fontSize: 16, color: Colors.secondaryTextColor},
+  failedContainer: {flex: 1, justifyContent: 'center'},
+  centeredText: {textAlign: 'center'},
+  buttonStyle: {
+    width: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
+    backgroundColor: Colors.blue,
+  },
+  buttonTextStyle: {color: Colors.white, textAlign: 'center'},
 });

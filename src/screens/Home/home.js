@@ -13,6 +13,7 @@ import SearchBar from '../../components/SearchBar';
 import Card from '../../components/Card';
 import {ApiRequestStatus} from '../../Models/model';
 import {Colors} from '../../Theme/colors';
+import Button from '../../components/Button';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -45,7 +46,7 @@ export default class Home extends React.Component {
       return (
         <View style={styles.normalContainer}>
           <Text style={styles.marginBottom}>
-            {strings.loading_data_message}
+            {strings.loading_movies_messge}
           </Text>
           <ActivityIndicator color={Colors.blue} />
         </View>
@@ -53,10 +54,16 @@ export default class Home extends React.Component {
     }
     if (movieLoadingStatus === ApiRequestStatus.FAILED) {
       return (
-        <View style={styles.normalContainer}>
-          <Text style={styles.marginBottom}>
-            {strings.failed_loading_data_message}
+        <View style={styles.failedContainer}>
+          <Text style={[styles.marginBottom, styles.centeredText]}>
+            {strings.failed_loading_movie_message}
           </Text>
+          <Button
+            onPress={() => this.props.getMovies()}
+            style={styles.buttonStyle}
+            textStyle={styles.buttonTextStyle}
+            text={strings.retry}
+          />
         </View>
       );
     }
@@ -87,5 +94,16 @@ const styles = StyleSheet.create({
   normalContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   flexStyle: {flex: 1},
   cardContainer: {padding: 4, backgroundColor: Colors.white},
-  marginBottom: {marginBottom: 16},
+  marginBottom: {marginBottom: 16, fontSize: 16},
+  failedContainer: {flex: 1, justifyContent: 'center'},
+  centeredText: {textAlign: 'center'},
+  buttonStyle: {
+    width: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
+    backgroundColor: Colors.blue,
+  },
+  buttonTextStyle: {color: Colors.white, textAlign: 'center'},
 });

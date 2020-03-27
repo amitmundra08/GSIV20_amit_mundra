@@ -5,9 +5,15 @@ export const strings = {
   done: 'Done',
   search: 'Search',
   loading_data_message: 'Loading data. Please wait.',
-  failed_loading_data_message: 'Failed to load data. Please retry.',
-  case: 'Cast',
+  failed_loading_data_message: 'Failed to loading data. Please retry.',
+  cast: 'Cast',
   description: 'Description',
+  loading_movies_messge: 'Loading movies from server. Please wait.',
+  failed_loading_movie_message: 'Failed to loading movies. Please retry.',
+  failed_loading_movie_details_message:
+    'Failed to load movie details. Please retry',
+  loading_movie_details_message:
+    'Loading movie details from server. Please wait.',
 };
 
 export const appConstants = {
