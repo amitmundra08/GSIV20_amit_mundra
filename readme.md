@@ -14,7 +14,7 @@ c. To improvise my solution :-
     1. Few UI changes would have been possible along with animation.
     2. Would have added a functionality to register and login with a few information of the user which would help us to suggest him/her the series and movies which the user would like to watch.(example Preferences) 
     3. Would have also tried to make a screen which would have contain list of series, movies, trending in horizontal direction as many people are fond of series now a days.
-d. No feedback for improving because from my point of view many things are covered in this challenge.
+d. No feedback for improving because from my point of view many things are covered in this challenge. Could have also asked for error handling and fallbacks for different scenarios as multiple server calls are involved here.
 
 
 
